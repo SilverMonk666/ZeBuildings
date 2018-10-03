@@ -1,8 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+
+
 #include "MoveDoor.h"
-#include "GameFramework/Actor.h"
 #include "Math/TransformNonVectorized.h"
+
+
 
 
 // Sets default values for this component's properties
@@ -20,6 +23,8 @@ UMoveDoor::UMoveDoor()
 void UMoveDoor::BeginPlay()
 {
 	Super::BeginPlay();
+
+	ObjectToCollideWith = GetWorld()->GetFirstPlayerController()->GetPawn();
 
 }
 
@@ -40,8 +45,7 @@ void UMoveDoor::OpenDoor()
 void UMoveDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	//Pull trigger volume every frame
-		//if the actor that opens is in the volume
+	
 	if (PressurePlate->IsOverlappingActor(ObjectToCollideWith))
 	{
 		OpenDoor();
