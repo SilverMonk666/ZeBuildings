@@ -5,18 +5,18 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Engine/TriggerVolume.h"
-#include "RotationReporter.generated.h"
+#include "MoveDoor.generated.h"
 
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class THEESCAPE_API URotationReporter : public UActorComponent
+class THEESCAPE_API UMoveDoor : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	URotationReporter();
+	UMoveDoor();
 
 protected:
 	// Called when the game starts
@@ -26,13 +26,17 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-
 private:
-	UPROPERTY(EditAnywhere)
-		ATriggerVolume* ObjectToCollideWith;
+	UPROPERTY(VisibleAnywhere)
+		float OpenAngle = 90.f;
 	
-	//TODO Add Actor and set it to player on begin play implimentation 
-	//AActor* OtherActor
+	UPROPERTY(EditAnywhere)
+		ATriggerVolume* PressurePlate;
+
+	UPROPERTY(EditAnywhere)
+		AActor* ObjectToCollideWith;
+
+
 		
 	
 };
