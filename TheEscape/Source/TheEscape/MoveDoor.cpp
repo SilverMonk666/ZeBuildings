@@ -21,8 +21,10 @@ void UMoveDoor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
+}
 
+void UMoveDoor::OpenDoor()
+{
 	//Find the Owning actor
 	AActor* Owner = GetOwner();
 
@@ -30,7 +32,7 @@ void UMoveDoor::BeginPlay()
 	FRotator NewRotation = FRotator(0.f, 80.f, 0.f);
 	//Set the door Rotation
 	Owner->SetActorRotation(NewRotation);
-	
+
 }
 
 
@@ -38,7 +40,11 @@ void UMoveDoor::BeginPlay()
 void UMoveDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	
+	//Pull trigger volume every frame
+		//if the actor that opens is in the volume
+	if (PressurePlate->IsOverlappingActor(ObjectToCollideWith))
+	{
+		OpenDoor();
+	}
 }
 
