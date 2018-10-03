@@ -24,22 +24,20 @@ void UMoveDoor::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Owner = GetOwner();
 	ObjectToCollideWith = GetWorld()->GetFirstPlayerController()->GetPawn();
 
 }
 
 void UMoveDoor::OpenDoor()
 {
-	//Find the Owning actor
-	AActor* Owner = GetOwner();
-
-	//Create a rotation
-	FRotator NewRotation = FRotator(0.f, 80.f, 0.f);
-	//Set the door Rotation
-	Owner->SetActorRotation(NewRotation);
-
+	Owner->SetActorRotation(FRotator(0.f, OpenAngle, 0.f));
 }
 
+void UMoveDoor::CloseDoor()
+{
+	Owner->SetActorRotation(FRotator(0.f, 0.f, 0.f));
+}
 
 // Called every frame
 void UMoveDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -49,6 +47,13 @@ void UMoveDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	if (PressurePlate->IsOverlappingActor(ObjectToCollideWith))
 	{
 		OpenDoor();
+		LastDoorOpenTime = GetWorld()->GetTimeSeconds();
 	}
+
+	if (GetWorld()->GetRealTimeSeconds() - LastDoorOpenTime > DoorClosedDelay)
+	{
+		CloseDoor();
+	}
+
 }
 
