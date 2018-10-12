@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "GameFramework/Actor.h"
+#include "Engine/World.h"
 #include "Engine/TriggerVolume.h"
 #include "RotationReporter.generated.h"
 
@@ -22,17 +24,24 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	void OpenDoor();
+	void CloseDoor();
+
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 
 private:
+
 	UPROPERTY(EditAnywhere)
-		ATriggerVolume* ObjectToCollideWith;
-	
-	//TODO Add Actor and set it to player on begin play implimentation 
-	//AActor* OtherActor
-		
-	
+		float OpenAngle = -90.f;
+	UPROPERTY(EditAnywhere)
+		ATriggerVolume* PressurePlate;
+
+		AActor* ObjectToCollideWith;
+		AActor* Owner;
+		float TimeToOpen = 1.f;
+		float LastOpenTime;
+
 };

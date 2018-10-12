@@ -23,25 +23,30 @@ URotationReporter::URotationReporter()
 void URotationReporter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	FString ReportName = GetOwner()->GetName();
-	FString ReportPosition = GetOwner()->GetTransform().GetLocation().ToString();
-
-	UE_LOG(LogTemp, Warning, TEXT("%s is at position %s"),*ReportName,*ReportPosition);
-
-
-
-
-
+	Owner = GetOwner();
+	ObjectToCollideWith = GetWorld()->GetFirstPlayerController()->GetPawn();
 	
 }
 
+void URotationReporter::OpenDoor()
+{
+	Owner->SetActorRotation(FRotator(0.f, OpenAngle, 0.f));
+}
+
+void URotationReporter::CloseDoor()
+{
+	Owner->SetActorRotation(FRotator(0.f, 0.f, 0.f));
+}
 
 // Called every frame
 void URotationReporter::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	if (PressurePlate->IsOverlappingActor(ObjectToCollideWith))
+	{
+		OpenDoor();
+		LastOpenTime = GetWorld()->GetTimeSeconds();
+	}
 
-	// ...
 }
 
