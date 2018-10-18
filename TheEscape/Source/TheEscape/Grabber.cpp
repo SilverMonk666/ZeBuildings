@@ -20,6 +20,17 @@ void UGrabber::BeginPlay()
 	Super::BeginPlay();
 
 	UE_LOG(LogTemp, Warning, TEXT("Grabber Reporting For Duty!!!"));
+
+	//Look for attached Physics Handle
+	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
+	if (PhysicsHandle)
+	{
+		//Physics handle is Found
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s Is missing a PhysicsHandle Component. Please Add Component to Actor."), *GetOwner()->GetName())
+	}
 	
 }
 
