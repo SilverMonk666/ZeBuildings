@@ -32,8 +32,28 @@ void UGrabber::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("%s Is missing a PhysicsHandle Component. Please Add Component to Actor."), *GetOwner()->GetName())
 	}
 	
+	//Look for attached InputComponent (only appears at Run time)
+	InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
+	if (InputComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("InputComponent Found."))
+			///Bind the input axis
+			InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
+			InputComponent->BindAction("Grab", IE_Released, this, &UGrabber::Release);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s Is missing an InputComponent. Please Add Component to Actor."), *GetOwner()->GetName())
+	}
 }
-
+void UGrabber::Grab()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Grab Pressed"))
+}
+void UGrabber::Release()
+{
+	UE_LOG(LogTemp,Warning,TEXT("Grab Released"))
+}
 
 // Called every frame
 void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
